@@ -31,6 +31,7 @@ func PrintNotaPdf(c echo.Context) error {
 				Message: fmt.Sprintf("Error. %v", err.Error()),
 			})
 	}
+
 	c.Response().Writer.Header().Set("Content-Type", "application/pdf")
 	c.Response().Writer.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=nota-%d.pdf", data.ID))
 	return c.Blob(http.StatusOK, "application/pdf", buf.Bytes())
@@ -40,8 +41,10 @@ func create_nota_pdf(writer io.Writer, data *CustomerOrder) (err error) {
 	const (
 		unit        = "mm"
 		orientation = "P"
-		saxmono     = "saxmono"
-		//ocra        = "ocrb"
+		fontStd     = "fonts"
+		//fontBold    = "fontb"
+		fontssize = 9.0
+		fontbsize = 12.0
 	)
 	//var lh float64 = 16
 	pgw := 95.0
@@ -61,8 +64,8 @@ func create_nota_pdf(writer io.Writer, data *CustomerOrder) (err error) {
 
 	//log.Println(filepath.Join(dir, "fonts"))
 
-	p.AddUTF8Font(saxmono, "", "saxmono.ttf")
-	//p.AddUTF8Font(ocra, "B", "consolab.ttf")
+	p.AddUTF8Font(fontStd, "", "saxmono.ttf")
+	//p.AddUTF8Font(fontBold, "B", "jet-bold.ttf")
 	p.SetMargins(ml, mt, mr)
 	p.SetAutoPageBreak(true, 3.0)
 
@@ -72,18 +75,18 @@ func create_nota_pdf(writer io.Writer, data *CustomerOrder) (err error) {
 	y := mt
 	x := ml
 
-	lnHeight := 3.5
+	lnHeight := 4.0
 
 	fileLogo := filepath.Join(dir, "tokomm.png")
 
 	half := 95.0 / 3.0
 
 	p.AddPage()
-	p.SetFont(saxmono, "", 8)
-	p.Image(fileLogo, x, y, half, 0, false, "", 0, "")
+	p.SetFont(fontStd, "", fontssize)
+	p.Image(fileLogo, x, y+3.0, half+3.0, 0, false, "", 0, "")
 
 	col0 := 20.0
-	x += half + 3.0
+	x += half + 6.0
 	p.SetXY(x, y+5.0)
 
 	p.CellFormat(col0, lnHeight, "ORDER ID:", "", 0, "LT", false, 0, "")
@@ -145,10 +148,10 @@ func create_nota_pdf(writer io.Writer, data *CustomerOrder) (err error) {
 	p.Line(x, p.GetY(), pgw-x, p.GetY())
 	p.SetXY(x, p.GetY()+2.0)
 	p.CellFormat(col1+col2+col3, lnHeight, "TOTAL", "", 0, "RT", false, 0, "")
-	p.SetFont(saxmono, "", 10)
+	p.SetFont(fontStd, "", fontbsize)
 	p.CellFormat(col4+col5, lnHeight, m.Sprintf("%0.f", data.Total), "", 1, "RB", false, 0, "")
 	p.SetXY(x, p.GetY()+1.0)
-	p.SetFont(saxmono, "", 8)
+	p.SetFont(fontStd, "", fontssize)
 	p.CellFormat(col1+col2+col3, lnHeight, "BAYAR", "", 0, "RT", false, 0, "")
 	p.CellFormat(col4+col5, lnHeight, m.Sprintf("%0.f", data.Payment), "", 1, "RT", false, 0, "")
 	p.SetXY(x, p.GetY())

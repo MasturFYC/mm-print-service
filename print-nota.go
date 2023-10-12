@@ -76,7 +76,7 @@ func PrintNota(c echo.Context) error {
 	s.WriteString(strings.Repeat(sep, sepCount))
 	s.WriteString("\n")
 	s.WriteString(fmt.Sprintf(sep2, "TOTAL"))
-	s.WriteString(fmt.Sprintf("%20s", "\u001B\u0050\u001B\u0045"+p.Sprintf("%0.f\u001B\u0046\u001B\u0067\n", data.Total)))
+	s.WriteString(fmt.Sprintf("%19s", "\u001B\u0050\u001B\u0045"+p.Sprintf("%0.f\u001B\u0046\u001B\u0067\n", data.Total)))
 	s.WriteString(fmt.Sprintf(sep2, "BAYAR"))
 	s.WriteString(fmt.Sprintf(sep3, p.Sprintf("%0.f\n", data.Payment)))
 	s.WriteString(fmt.Sprintf(sep2, "SISA BAYAR"))
