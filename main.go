@@ -16,6 +16,7 @@ func main() {
 	api := e.Group("/api/v1")
 	e.GET("/hello", Greetings)
 	api.POST("/print-nota", PrintNota)
+	api.POST("/print-nota-pdf", PrintNotaPdf)
 	e.Logger.Fatal(e.Start(":3000"))
 }
 

@@ -22,5 +22,6 @@ require (
 
 require (
 	github.com/jadefox10200/goprint v0.0.0-20220906024909-7bed801d01d2
+	github.com/jung-kurt/gofpdf v1.16.2
 	golang.org/x/sys v0.13.0 // indirect
 )
