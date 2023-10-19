@@ -82,7 +82,7 @@ func PrintNota(c echo.Context) error {
 	s.WriteString(fmt.Sprintf(sep2, "SISA BAYAR"))
 	s.WriteString(fmt.Sprintf(sep3, p.Sprintf("%0.f\n", data.RemainPayment)))
 
-	log.Printf("Print nota: %12v", data.ID)
+	log.Printf("%-25s#%v", "Print nota order:", data.ID)
 
 	print_nota(s.String())
 

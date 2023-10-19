@@ -10,13 +10,14 @@ import (
 func main() {
 	e := echo.New()
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://localhost:5173", "http://localhost:3000"},
+		AllowOrigins: []string{"http://localhost:5173", "http://localhost:3000", "http://malvamelva.com"},
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
 	}))
 	api := e.Group("/api/v1")
 	e.GET("/hello", Greetings)
 	api.POST("/print-nota", PrintNota)
 	api.POST("/print-nota-pdf", PrintNotaPdf)
+	api.POST("/print-do", PrintDO)
 	e.Logger.Fatal(e.Start(":3000"))
 }
 
