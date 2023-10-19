@@ -10,7 +10,7 @@ import (
 func main() {
 	e := echo.New()
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://localhost:5173", "http://localhost:3000", "http://malvamelva.com"},
+		AllowOrigins: []string{"http://localhost:5173", "http://localhost:3000", "https://malvamelva.com"},
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
 	}))
 	api := e.Group("/api/v1")
