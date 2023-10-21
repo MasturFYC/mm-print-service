@@ -24,16 +24,6 @@ func PrintNota(c echo.Context) error {
 		return err
 	}
 
-	sep := "-"
-	sepCount := 20 + 5 + 6 + 9 + 12 + 1
-	sep2 := "%39s"
-	sep3 := "%15s"
-	s1 := "%-20v"
-	s2 := "%5v"
-	s3 := " %-6v"
-	s4 := "%9s"
-	s5 := "%12s"
-
 	s := strings.Builder{}
 
 	//ESC := "\u001B"
@@ -44,16 +34,10 @@ func PrintNota(c echo.Context) error {
 	s.WriteString(fmt.Sprintf("Jl. Raya Sukra - Indramayu   SALES:     %s\n", data.SalesName))
 	s.WriteString(fmt.Sprintf("  HP/WA: 082 318 321 934     PELANGGAN: %s\n", data.CustomerName))
 	s.WriteString(fmt.Sprintf("                             ALAMAT:    %s\n", data.Address))
-	s.WriteString(strings.Repeat(sep, sepCount))
-	s.WriteString("\n")
-	s.WriteString(fmt.Sprintf(s1, "NAMA BARANG"))
-	s.WriteString(fmt.Sprintf(s2, "QTY"))
-	s.WriteString(fmt.Sprintf(s3, "UNIT"))
-	s.WriteString(fmt.Sprintf(s4, "HARGA"))
-	s.WriteString(fmt.Sprintf(s5, "SUBTOTAL"))
-	s.WriteString("\n")
-	s.WriteString(strings.Repeat(sep, sepCount))
-	s.WriteString("\n")
+	s.WriteString("------------------+-----------+-----------+-----------\n")
+	s.WriteString("NAMA BARANG       |  QTY UNIT |     HARGA |   SUBTOTAL\n")
+	s.WriteString("------------------+-----------+-----------+-----------\n")
+
 	p := message.NewPrinter(language.Indonesian)
 
 	for _, d := range data.Details {
@@ -62,25 +46,19 @@ func PrintNota(c echo.Context) error {
 			name += ", " + d.VariantName
 		}
 
-		if len(name) > 20 {
-			name = name[0:20]
+		if len(name) > 17 {
+			name = name[0:17]
 		}
 
-		s.WriteString(fmt.Sprintf(s1, name))
-		s.WriteString(fmt.Sprintf(s2, d.Qty))
-		s.WriteString(fmt.Sprintf(s3, d.Unit))
-		s.WriteString(fmt.Sprintf(s4, p.Sprintf("%0.f", d.Pot)))
-		s.WriteString(fmt.Sprintf(s5, p.Sprintf("%0.f", d.Subtotal)))
+		s.WriteString(fmt.Sprintf("%-17s | %4v %-4s | %9s | %10s", name, d.Qty, d.Unit,
+			p.Sprintf("%0.f", d.Pot), p.Sprintf("%0.f", d.Subtotal)))
 		s.WriteString("\n")
 	}
-	s.WriteString(strings.Repeat(sep, sepCount))
-	s.WriteString("\n")
-	s.WriteString(fmt.Sprintf(sep2, "TOTAL"))
-	s.WriteString(fmt.Sprintf("%19s", "\u001B\u0050\u001B\u0045"+p.Sprintf("%0.f\u001B\u0046\u001B\u0067\n", data.Total)))
-	s.WriteString(fmt.Sprintf(sep2, "BAYAR"))
-	s.WriteString(fmt.Sprintf(sep3, p.Sprintf("%0.f\n", data.Payment)))
-	s.WriteString(fmt.Sprintf(sep2, "SISA BAYAR"))
-	s.WriteString(fmt.Sprintf(sep3, p.Sprintf("%0.f\n", data.RemainPayment)))
+	s.WriteString("------------------+-----------+-----------+-----------\n")
+	//s.WriteString(fmt.Sprintf("%20s%10s%c%c%c%12s%c%c%c\n", "", "TOTAL", 27, 87, 1, p.Sprintf("%0.f", data.Total), 27, 87, 0))
+	s.WriteString(fmt.Sprintf("%26s%10s%c%c%c%c%12s%c%c%c%c\n", "", "TOTAL", 27, 80, 27, 69, p.Sprintf("%0.f", data.Total), 27, 103, 27, 70))
+	s.WriteString(fmt.Sprintf("%26s%10s%18s\n", "", "BAYAR", p.Sprintf("%0.f", data.Payment)))
+	s.WriteString(fmt.Sprintf("%26s%10s%18s\n", "", "SISA BAYAR", p.Sprintf("%0.f", data.RemainPayment)))
 
 	log.Printf("%-25s#%v", "Print nota order:", data.ID)
 
@@ -122,29 +100,12 @@ func print_nota(data string) {
 	if err != nil {
 		fmt.Println(err)
 	}
-
-	// **************** LIHAT DI CHARACTER MAP ***************** //
-
-	// Mulai mencetak string ke printer default yang ada di windows
-	ESC := "\u001B"
-	//CONDENSED := ESC + "\u0021\u0004" // "\u0065"
-	TYPEFACE := ESC + "\u006B"
-	SANS := TYPEFACE + "\u0031"
-	//PITCH10 := ESC + "\u0050"
-	//PITCH12 := ESC + "\u004D"
-	PITCH15 := ESC + "\u0067"
-	//DRAFT := ESC + "\u0078\u0030"
-	//OCRB := TYPEFACE + "\u0005"
-	//OCRA := TYPEFACE + "\u0006"
-	//ORATOR := TYPEFACE + "\u0007"
-	//SANSH := TYPEFACE + "\u0011"
-	fmt.Fprint(p, ESC+"@")
-	//fmt.Fprint(p, DRAFT)
-	//fmt.Fprint(p, CONDENSED)
-	fmt.Fprint(p, PITCH15)
-	fmt.Fprint(p, SANS)
-	fmt.Fprint(p, ESC+"\u0012")
-	fmt.Fprint(p, data)
+	esc := Esc{}
+	esc.Init(p)
+	esc.PageLength(p, 33)
+	esc.Pitch(p, 103)
+	esc.Typeface(p, 1)
+	esc.Print(p, data)
 }
 
 func print_logo() {

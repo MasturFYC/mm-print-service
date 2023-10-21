@@ -33,7 +33,7 @@ func PrintDO(c echo.Context) error {
 	//BOLD := ESC + "\u0045"
 	//UNBOLD := ESC + "\u0046"
 
-	s.WriteString(fmt.Sprintf("      \u001B\u0057\u0031\u001B\u0045TOKO MM\u001B\u0046\u001B\u0057\u0030         DO-ID:    %d\n", delivery.Delivery_id))
+	s.WriteString(fmt.Sprintf("      \u001B\u0057\u0031\u001B\u0045TOKO MM\u001B\u0046\u001B\u0057\u0030         DO-ID:   %v\n", delivery.Delivery_id))
 	s.WriteString(fmt.Sprintf("Jl. Raya Sukra - Indramayu   TANGGAL: %s\n", delivery.Created_at))
 	s.WriteString(fmt.Sprintf("  HP/WA: 082 318 321 934     SUPIR:   %s\n", delivery.Driver_name))
 	s.WriteString(fmt.Sprintf("                             NOPOL:   %s\n", data.Delivery.Nopol))
@@ -112,23 +112,11 @@ func print_do(data string) {
 	// **************** LIHAT DI CHARACTER MAP ***************** //
 
 	// Mulai mencetak string ke printer default yang ada di windows
-	ESC := "\u001B"
-	//CONDENSED := ESC + "\u0021\u0004" // "\u0065"
-	TYPEFACE := ESC + "\u006B"
-	SANS := TYPEFACE + "\u0031"
-	//PITCH10 := ESC + "\u0050"
-	//PITCH12 := ESC + "\u004D"
-	PITCH15 := ESC + "\u0067"
-	//DRAFT := ESC + "\u0078\u0030"
-	//OCRB := TYPEFACE + "\u0005"
-	//OCRA := TYPEFACE + "\u0006"
-	//ORATOR := TYPEFACE + "\u0007"
-	//SANSH := TYPEFACE + "\u0011"
-	fmt.Fprint(p, ESC+"@")
-	//fmt.Fprint(p, DRAFT)
-	//fmt.Fprint(p, CONDENSED)
-	fmt.Fprint(p, PITCH15)
-	fmt.Fprint(p, SANS)
-	fmt.Fprint(p, ESC+"\u0012")
-	fmt.Fprint(p, data)
+	esc := Esc{}
+	esc.Init(p)
+	esc.PageLength(p, 33)
+	esc.Pitch(p, 103)
+	esc.Typeface(p, 1)
+	esc.Print(p, data)
+	//	esc.Print(p, "───")
 }
