@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/alexbrainman/printer"
 	"github.com/labstack/echo/v4"
@@ -71,21 +72,23 @@ func print_payment(data PrintDataPayment) {
 	esc.Init(p)
 	esc.PageLength(p, 33)
 	esc.Pitch(p, 80)
-	esc.Typeface(p, 1)
+	esc.Typeface(p, 0)
+	esc.LqMode(p, 1)
 	esc.Print(p, "\u001B\u0057\u0031\u001B\u0045KWITANSI\u001B\u0046\u001B\u0057\u0030")
 	esc.Print(p, "\n")
 	esc.Print(p, "\n")
 	esc.Print(p, "\n")
-	esc.Print(p, fmt.Sprintf("%-17s : %v\n", "NO. Kwitansi", data.PaymentId))
-	esc.Print(p, fmt.Sprintf("%-17s : %s\n\n", "Telah terima dari", data.CustomerName))
-	esc.Print(p, fmt.Sprintf("%-17s :\n", "Uang sejumlah"))
-	esc.Pitch(p, 77)
+	esc.Print(p, fmt.Sprintf("Kwitansi No.      : %v\n\n", data.PaymentId))
+	esc.Print(p, fmt.Sprintf("Telah terima dari : %s\n\n", data.CustomerName))
+	esc.Print(p, "Uang sejumlah     :\n")
+	esc.Print(p, "\"")
 	esc.Italic(p)
-	esc.Print(p, fmt.Sprintf("\"%s%s\"\n\n", data.Terbilang, "Rupiah"))
+	esc.Print(p, break_text(data.Terbilang))
 	esc.Unitalic(p)
-	esc.Pitch(p, 80)
-	esc.Print(p, fmt.Sprintf("%-17s :\n%s #%v\n\n", "Untuk pembayaran", "Piutang No. Order", data.OrderId))
-	esc.Print(p, fmt.Sprintf("%-17s : Rp.", "Terbilang"))
+	esc.Print(p, "\"\n\n")
+	esc.Print(p, fmt.Sprintf("Untuk pembayaran  :\n%s #%v\n\n", "Piutang No. Order", data.OrderId))
+	esc.Print(p, "\n")
+	esc.Print(p, fmt.Sprintf("Terbilang         : Rp."))
 	esc.Bold(p)
 	esc.Print(p, f.Sprintf("%0.f", data.Amount))
 	esc.Unbold(p)
@@ -98,4 +101,25 @@ func print_payment(data PrintDataPayment) {
 	esc.Print(p, fmt.Sprintf("%-15s%s\n", "", data.Admin))
 	esc.Print(p, "\n")
 	//	esc.Print(p, "───")
+	// log.Println(break_text(data.Terbilang))
+}
+
+func break_text(s string) string {
+	ss := strings.Split(s, " ")
+	sr := make([]string, len(ss)+2)
+
+	l := 0
+
+	for _, t := range ss {
+		l += len(t)
+		if l >= 30 {
+			sr = append(sr, "\n")
+			l = len(t)
+		}
+		sr = append(sr, t)
+	}
+
+	sr = append(sr, "Rupiah")
+
+	return strings.TrimSpace(strings.Join(sr, " "))
 }

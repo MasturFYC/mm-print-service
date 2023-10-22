@@ -36,6 +36,11 @@ func (t Esc) Print(w io.Writer, s string) (int, error) {
 	return fmt.Fprint(w, s)
 }
 
+func (t Esc) Println(w io.Writer, s string) (int, error) {
+	fmt.Fprint(w, s)
+	return fmt.Fprint(w, "\n")
+}
+
 func (t Esc) Eject(w io.Writer) (int, error) {
 	return fmt.Fprintf(w, "%c%c%c", 27, 25, 66)
 }
