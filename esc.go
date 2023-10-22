@@ -40,6 +40,22 @@ func (t Esc) Eject(w io.Writer) (int, error) {
 	return fmt.Fprintf(w, "%c%c%c", 27, 25, 66)
 }
 
+func (t Esc) Bold(w io.Writer) (int, error) {
+	return fmt.Fprintf(w, "%c%c", 27, 69)
+}
+
+func (t Esc) Unbold(w io.Writer) (int, error) {
+	return fmt.Fprintf(w, "%c%c", 27, 70)
+}
+
+func (t Esc) Italic(w io.Writer) (int, error) {
+	return fmt.Fprintf(w, "%c%c", 27, 52)
+}
+
+func (t Esc) Unitalic(w io.Writer) (int, error) {
+	return fmt.Fprintf(w, "%c%c", 27, 53)
+}
+
 /*
 ESC t n
 

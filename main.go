@@ -18,6 +18,7 @@ func main() {
 	api.POST("/print-nota", PrintNota)
 	api.POST("/print-nota-pdf", PrintNotaPdf)
 	api.POST("/print-do", PrintDO)
+	api.POST("/print-payment", PrintPayment)
 	e.Logger.Fatal(e.Start(":3000"))
 }
 

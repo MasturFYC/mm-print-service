@@ -37,3 +37,15 @@ type PrintDelivery struct {
 	Delivery DeliveryOrderList     `json:"delivery"`
 	Details  []DeliveryWithProduct `json:"details"`
 }
+
+type PrintDataPayment struct {
+	PaymentId    uint64  `json:"paymentId"`
+	OrderId      uint64  `json:"orderId"`
+	CreatedAt    string  `json:"createdAt"`
+	Amount       float64 `json:"amount"`
+	Remain       float64 `json:"remain"`
+	CustomerName string  `json:"customerName"`
+	Description  string  `json:"description"`
+	Terbilang    string  `json:"terbilang"`
+	Admin        string  `json:"admin"`
+}
