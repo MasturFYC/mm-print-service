@@ -31,10 +31,11 @@ func PrintNota(c echo.Context) error {
 	//UNBOLD := ESC + "\u0046"
 
 	s.WriteString(fmt.Sprintf("      \u001B\u0057\u0031\u001B\u0045TOKO MM\u001B\u0046\u001B\u0057\u0030         ORDER ID:  %d\n", data.ID))
-	s.WriteString(fmt.Sprintf("Jl. Raya Sukra - Indramayu   SALES:     %s\n", data.SalesName))
-	s.WriteString(fmt.Sprintf("  HP/WA: 082 318 321 934     PELANGGAN: %s\n", data.CustomerName))
-	s.WriteString(fmt.Sprintf("                             ALAMAT:    %s\n", data.Address))
-	s.WriteString(fmt.Sprintf("                             TANGGAL:   %s\n", data.CreatedAt))
+	s.WriteString(fmt.Sprintf("Jl. Raya Sukra - Indramayu   SALES:   %s\n", data.SalesName))
+	s.WriteString(fmt.Sprintf("  HP/WA: 082 318 321 934     PLGN:    %s\n", data.CustomerName))
+	s.WriteString(fmt.Sprintf("                             ALAMAT:  %s\n", data.Address))
+	s.WriteString(fmt.Sprintf("                             TANGGAL: %s\n", data.CreatedAt))
+	s.WriteString(fmt.Sprintf("                             USER:    %s\n", data.UpdatedBy))
 	s.WriteString("------------------+-----------+-----------+-----------\n")
 	s.WriteString("NAMA BARANG       |  QTY UNIT |     HARGA |   SUBTOTAL\n")
 	s.WriteString("------------------+-----------+-----------+-----------\n")
@@ -64,7 +65,7 @@ func PrintNota(c echo.Context) error {
 	log.Printf("%-25s#%v", "Print nota order:", data.ID)
 
 	print_nota(s.String())
-	log.Printf("%v", s.String())
+	//log.Printf("%v", s.String())
 
 	return c.JSON(http.StatusOK, HelloWorld{
 		Message: fmt.Sprintf("Print success Nota No. %d", data.ID),

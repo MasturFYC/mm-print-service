@@ -1,6 +1,5 @@
 package main
 
-
 type HelloWorld struct {
 	Message string `json:"message"`
 }
@@ -30,4 +29,14 @@ type CustomerOrder struct {
 	Address       string        `json:"address"`
 	UpdatedBy     string        `json:"updatedBy"`
 	Details       []OrderDetail `json:"details"`
+}
+
+type CashierData struct {
+	User     string  `json:"user"`
+	Subtotal float64 `json:"subtotal"`
+}
+
+type CashierReport struct {
+	Created_at string        `json:"created_at"`
+	Data       []CashierData `json:"data"`
 }
