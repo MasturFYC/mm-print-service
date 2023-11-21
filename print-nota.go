@@ -30,12 +30,12 @@ func PrintNota(c echo.Context) error {
 	//BOLD := ESC + "\u0045"
 	//UNBOLD := ESC + "\u0046"
 
-	s.WriteString(fmt.Sprintf("      \u001B\u0057\u0031\u001B\u0045TOKO MM\u001B\u0046\u001B\u0057\u0030         ORDER ID:  %d\n", data.ID))
-	s.WriteString(fmt.Sprintf("Jl. Raya Sukra - Indramayu   SALES:   %s\n", data.SalesName))
-	s.WriteString(fmt.Sprintf("  HP/WA: 082 318 321 934     PLGN:    %s\n", data.CustomerName))
-	s.WriteString(fmt.Sprintf("                             ALAMAT:  %s\n", data.Address))
-	s.WriteString(fmt.Sprintf("                             TANGGAL: %s\n", data.CreatedAt))
-	s.WriteString(fmt.Sprintf("                             USER:    %s\n", data.UpdatedBy))
+	s.WriteString(fmt.Sprintf("      \u001B\u0057\u0031\u001B\u0045TOKO MM\u001B\u0046\u001B\u0057\u0030        ORDER ID: %d\n", data.ID))
+	s.WriteString(fmt.Sprintf("Jl. Raya Sukra - Indramayu  SALES:    %s\n", data.SalesName))
+	s.WriteString(fmt.Sprintf("  HP/WA: 082 318 321 934    PLGN:     %s\n", data.CustomerName))
+	s.WriteString(fmt.Sprintf("                            ALAMAT:   %s\n", data.Address))
+	s.WriteString(fmt.Sprintf("                            TANGGAL:  %s\n", data.CreatedAt))
+	s.WriteString(fmt.Sprintf("                            USER:     %s\n", data.UpdatedBy))
 	s.WriteString("------------------+-----------+-----------+-----------\n")
 	s.WriteString("NAMA BARANG       |  QTY UNIT |     HARGA |   SUBTOTAL\n")
 	s.WriteString("------------------+-----------+-----------+-----------\n")
@@ -56,16 +56,26 @@ func PrintNota(c echo.Context) error {
 			p.Sprintf("%0.f", d.Pot), p.Sprintf("%0.f", d.Subtotal)))
 		s.WriteString("\n")
 	}
+
 	s.WriteString("------------------+-----------+-----------+-----------\n")
 	//s.WriteString(fmt.Sprintf("%20s%10s%c%c%c%12s%c%c%c\n", "", "TOTAL", 27, 87, 1, p.Sprintf("%0.f", data.Total), 27, 87, 0))
 	s.WriteString(fmt.Sprintf("%26s%10s%c%c%c%c%12s%c%c%c%c\n", "", "TOTAL", 27, 80, 27, 69, p.Sprintf("%0.f", data.Total), 27, 103, 27, 70))
 	s.WriteString(fmt.Sprintf("%26s%10s%18s\n", "", "BAYAR", p.Sprintf("%0.f", data.Payment)))
-	s.WriteString(fmt.Sprintf("%26s%10s%18s\n", "", "SISA BAYAR", p.Sprintf("%0.f", data.RemainPayment)))
+
+	label := "KEMBALI"
+	kembali := data.Payment - data.Total
+
+	if data.Payment < data.Total {
+		label = "PIUTANG"
+		kembali = data.Total - data.Payment
+	}
+
+	s.WriteString(fmt.Sprintf("%26s%10s%18s\n", "", label, p.Sprintf("%0.f", kembali)))
 
 	log.Printf("%-25s#%v", "Print nota order:", data.ID)
 
 	print_nota(s.String())
-	//log.Printf("%v", s.String())
+	// log.Printf("%v", s.String())
 
 	return c.JSON(http.StatusOK, HelloWorld{
 		Message: fmt.Sprintf("Print success Nota No. %d", data.ID),
