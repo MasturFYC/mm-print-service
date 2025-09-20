@@ -13,9 +13,11 @@ func main() {
 		AllowOrigins: []string{"http://localhost:5173", "http://localhost:3000", "https://malvamelva.com"},
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
 	}))
+
 	api := e.Group("/api/v1")
 	e.GET("/hello", Greetings)
 	api.POST("/print-nota", PrintNota)
+	api.POST("/print-retail", PrintRetail)
 	api.POST("/print-nota-pdf", PrintNotaPdf)
 	api.POST("/print-do", PrintDO)
 	api.POST("/print-payment", PrintPayment)
