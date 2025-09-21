@@ -10,7 +10,6 @@ import (
 	"strings"
 
 	"github.com/alexbrainman/printer"
-	"github.com/jadefox10200/goprint"
 	"github.com/labstack/echo/v4"
 	language "golang.org/x/text/language"
 	message "golang.org/x/text/message"
@@ -121,22 +120,22 @@ func print_nota(data string) {
 	esc.Print(p, data)
 }
 
-func print_logo() {
+// func print_logo() {
 
-	printerName, _ := goprint.GetDefaultPrinterName()
+// 	printerName, _ := goprint.GetDefaultPrinterName()
 
-	//open the printer
-	printerHandle, err := goprint.GoOpenPrinter(printerName)
-	if err != nil {
-		log.Fatalln("Failed to open printer")
-	}
-	defer goprint.GoClosePrinter(printerHandle)
+// 	//open the printer
+// 	printerHandle, err := goprint.GoOpenPrinter(printerName)
+// 	if err != nil {
+// 		log.Fatalln("Failed to open printer")
+// 	}
+// 	defer goprint.GoClosePrinter(printerHandle)
 
-	filePath := "C:/Users/mastu/Documents/godoc/tokomm.pdf"
+// 	filePath := "C:/Users/mastu/Documents/godoc/tokomm.pdf"
 
-	//Send to printer:
-	err = goprint.GoPrint(printerHandle, filePath)
-	if err != nil {
-		log.Fatalln("during the func sendToPrinter, there was an error")
-	}
-}
+// 	//Send to printer:
+// 	err = goprint.GoPrint(printerHandle, filePath)
+// 	if err != nil {
+// 		log.Fatalln("during the func sendToPrinter, there was an error")
+// 	}
+// }

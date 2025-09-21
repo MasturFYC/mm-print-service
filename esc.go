@@ -44,6 +44,11 @@ func (t Esc) Feed(w io.Writer, line byte) (int, error) {
 	return fmt.Fprintf(w, "%c%c%c", 27, 100, line)
 }
 
+// POS 8
+func (t Esc) Cut(w io.Writer) (int, error) {
+	return fmt.Fprintf(w, "%cV%c", 29, 49)
+}
+
 func (t Esc) Print(w io.Writer, s string) (int, error) {
 	return fmt.Fprint(w, s)
 }
