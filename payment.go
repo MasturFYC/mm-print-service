@@ -88,7 +88,7 @@ func print_payment(data PrintDataPayment) {
 	esc.Print(p, "\"\n\n")
 	esc.Print(p, fmt.Sprintf("Untuk pembayaran  :\n%s #%v\n\n", "Piutang No. Order", data.OrderId))
 	esc.Print(p, "\n")
-	esc.Print(p, fmt.Sprintf("Terbilang         : Rp."))
+	esc.Print(p, "Terbilang         : Rp.")
 	esc.Bold(p)
 	esc.Print(p, f.Sprintf("%0.f", data.Amount))
 	esc.Unbold(p)

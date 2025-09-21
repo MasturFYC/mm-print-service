@@ -32,6 +32,18 @@ func (t Esc) Pitch(w io.Writer, cpi byte) (int, error) {
 	return fmt.Fprintf(w, "%c%c", 27, cpi)
 }
 
+// POS 8
+// 1 small
+// 0 standard
+func (t Esc) Character(w io.Writer, cpi byte) (int, error) {
+	return fmt.Fprintf(w, "%c%c%c", 27, 77, cpi)
+}
+
+// POS 8
+func (t Esc) Feed(w io.Writer, line byte) (int, error) {
+	return fmt.Fprintf(w, "%c%c%c", 27, 100, line)
+}
+
 func (t Esc) Print(w io.Writer, s string) (int, error) {
 	return fmt.Fprint(w, s)
 }
