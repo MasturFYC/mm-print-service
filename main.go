@@ -17,7 +17,7 @@ func main() {
 	api := e.Group("/api/v1")
 	e.GET("/hello", Greetings)
 	api.POST("/print-nota", PrintNota)
-	api.POST("/print-retail", PrintRetailSmall)
+	api.POST("/print-retail", PrintRetail)
 	api.POST("/print-retail-small", PrintRetailSmall)
 	api.POST("/print-nota-pdf", PrintNotaPdf)
 	api.POST("/print-do", PrintDO)
