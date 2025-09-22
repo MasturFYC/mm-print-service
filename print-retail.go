@@ -15,6 +15,9 @@ import (
 	message "golang.org/x/text/message"
 )
 
+var DOUBLE_SIZE_ON = "\x1D\x21\x11"
+var DOUBLE_SIZE_OFF = "\x1D\x21\x00"
+
 type MMPrinter struct{}
 
 func PrintRetail(c echo.Context) error {
@@ -45,14 +48,10 @@ func (m *MMPrinter) Print(c echo.Context) error {
 
 	s := strings.Builder{}
 
-	//ESC := "\u001B"
-	//BOLD := ESC + "\u0045"
-	//UNBOLD := ESC + "\u0046"
-
-	s.WriteString(fmt.Sprintf("%c%c%c", 29, 33, 1))
+	s.WriteString(DOUBLE_SIZE_ON)
 	s.WriteString(m.center("TOKO MM", paperWidth/2))
-	s.WriteString(fmt.Sprintf("%c%c%c", 29, 33, 0))
-	//s.WriteString(fmt.Sprintf("\n%c%c%c", 27, 77, 1))
+	s.WriteString(DOUBLE_SIZE_OFF)
+
 	s.WriteString("\n")
 	s.WriteString(m.center(fmt.Sprintf("ID: %d - %s - KASIR: %s", data.ID, data.CreatedAt, data.UpdatedBy), paperWidth))
 	s.WriteString("\n")
@@ -127,7 +126,7 @@ func (m *MMPrinter) PrintSmall(c echo.Context) error {
 	}
 
 	paperWidth := 64
-	pw := 48
+	//	pw := 48
 	border := strings.Repeat("-", paperWidth)
 
 	s := strings.Builder{}
@@ -136,9 +135,10 @@ func (m *MMPrinter) PrintSmall(c echo.Context) error {
 	//BOLD := ESC + "\u0045"
 	//UNBOLD := ESC + "\u0046"
 
-	s.WriteString(fmt.Sprintf("%c%c%c", 27, 77, 0))
-	s.WriteString(m.center("TOKO MM", pw))
-	s.WriteString(fmt.Sprintf("%c%c%c", 27, 77, 1))
+	s.WriteString(DOUBLE_SIZE_ON)
+	s.WriteString(m.center("TOKO MM", paperWidth/2))
+	s.WriteString(DOUBLE_SIZE_OFF)
+
 	s.WriteString("\n")
 	s.WriteString(m.center(fmt.Sprintf("ID: %d - TGL: %s - KASIR: %s", data.ID, data.CreatedAt, data.UpdatedBy), paperWidth))
 	s.WriteString("\n")
