@@ -90,10 +90,10 @@ func print_report_cashier(data string) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	esc := Esc{}
-	esc.Init(p)
-	esc.PageLength(p, 33)
-	esc.Pitch(p, 103)
-	esc.Typeface(p, 1)
-	esc.Print(p, data)
+	esc := NewEscpos(p)
+	esc.Init()
+	esc.PageLength(33)
+	esc.Pitch(103)
+	esc.Typeface(1)
+	esc.Print(data)
 }

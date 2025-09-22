@@ -236,10 +236,10 @@ func (m *MMPrinter) print(data string) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	esc := Esc{}
-	esc.Init(p)
-	esc.Character(p, 0)
-	esc.Print(p, data)
-	esc.Feed(p, 4)
-	esc.Cut(p)
+	esc := NewEscpos(p)
+	esc.Init()
+	esc.Character(0)
+	esc.Print(data)
+	esc.Feed(4)
+	esc.Cut()
 }
