@@ -53,6 +53,8 @@ func (m *MMPrinter) Print(c echo.Context) error {
 	s.WriteString(DOUBLE_SIZE_OFF)
 
 	s.WriteString("\n")
+	s.WriteString(m.center("JL. RAYA SUKRA - INDRAMAYU", paperWidth))
+	s.WriteString("\n")
 	s.WriteString(m.center(fmt.Sprintf("ID: %d - %s - KASIR: %s", data.ID, data.CreatedAt, data.UpdatedBy), paperWidth))
 	s.WriteString("\n")
 	// s.WriteString(fmt.Sprintf("%c%c%c\n", 27, 77, 0))
@@ -70,24 +72,27 @@ func (m *MMPrinter) Print(c echo.Context) error {
 	q := 0.0
 
 	for _, d := range data.Details {
-		pot := p.Sprintf("%0.f", d.Pot)
-		sqty := fmt.Sprintf("%v %s @ %s", d.Qty, d.Unit, pot)
-		nqty := len(sqty)
+		price := p.Sprintf("%0.f", d.Pot)
+		subtotal := p.Sprintf("%0.f", d.Subtotal)
+
+		// sqty := fmt.Sprintf("%v %s @ %s", d.Qty, d.Unit, pot)
+		// nqty := len(sqty)
 
 		name := d.Name
 		if len(d.VariantName) > 1 {
 			name += ", " + d.VariantName
 		}
 
-		maxlen := paperWidth - 10 - nqty
+		// maxlen := paperWidth - 10 - nqty
+		maxlen := 17
+
 		if len(name) > maxlen {
 			name = name[0:maxlen]
 		}
 
-		desc := fmt.Sprintf("%s, %s", name, sqty)
+		// desc := fmt.Sprintf("%s, %s", name, sqty)
 
-		subtotal := p.Sprintf("%0.f", d.Subtotal)
-		s.WriteString(fmt.Sprintf("%-38s%10s", desc, subtotal))
+		s.WriteString(fmt.Sprintf("%-20s%3v %-4s%10s%10s", name, d.Qty, d.Unit, price, subtotal))
 		s.WriteString("\n")
 		n = n + 1
 		q = q + d.Qty
