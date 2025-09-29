@@ -247,4 +247,7 @@ func (m *MMPrinter) print(data string) {
 	esc.Print(data)
 	esc.Feed(4)
 	esc.Cut()
+
+	log.Printf("%v", data)
+
 }
